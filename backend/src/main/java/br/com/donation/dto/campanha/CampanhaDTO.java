@@ -1,4 +1,4 @@
-package br.com.donation.model;
+package br.com.donation.dto.campanha;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,14 +6,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CampanhaDoacao {
+public class CampanhaDTO {
     private Integer id;
-    private Integer instituicaoUsuarioId;
+    private Integer instituicaoId;
+    private String nomeInstituicao;
     
     private String titulo;
     private String descricao;
@@ -23,6 +25,7 @@ public class CampanhaDoacao {
     private String status;
     private String itensFoco;
     private Integer metaVoluntarios;
-    
-    private Instituicao instituicao;
+
+    private List<LocalDoacaoDTO> locais;
 }
+

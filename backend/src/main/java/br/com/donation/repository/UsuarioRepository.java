@@ -24,14 +24,15 @@ public class UsuarioRepository extends AbstractRepository {
 
     private Usuario insert(Usuario usuario) {
         return execute(connection -> {
-            String sql = "INSERT INTO USUARIO (nome, email, logradouro, bairro, numero, CEP) VALUES (?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO USUARIO (nome, email, senha, logradouro, bairro, numero, CEP) VALUES (?, ?, ?, ?, ?, ?, ?)";
             try (PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                 ps.setString(1, usuario.getNome());
                 ps.setString(2, usuario.getEmail());
-                ps.setString(3, usuario.getLogradouro());
-                ps.setString(4, usuario.getBairro());
-                ps.setString(5, usuario.getNumero());
-                ps.setString(6, usuario.getCep());
+                ps.setString(3, usuario.getSenha());
+                ps.setString(4, usuario.getLogradouro());
+                ps.setString(5, usuario.getBairro());
+                ps.setString(6, usuario.getNumero());
+                ps.setString(7, usuario.getCep());
                 
                 ps.executeUpdate();
                 
@@ -47,15 +48,16 @@ public class UsuarioRepository extends AbstractRepository {
 
     private Usuario update(Usuario usuario) {
         return execute(connection -> {
-            String sql = "UPDATE USUARIO SET nome = ?, email = ?, logradouro = ?, bairro = ?, numero = ?, CEP = ? WHERE id = ?";
+            String sql = "UPDATE USUARIO SET nome = ?, email = ?, senha = ?, logradouro = ?, bairro = ?, numero = ?, CEP = ? WHERE id = ?";
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
                 ps.setString(1, usuario.getNome());
                 ps.setString(2, usuario.getEmail());
-                ps.setString(3, usuario.getLogradouro());
-                ps.setString(4, usuario.getBairro());
-                ps.setString(5, usuario.getNumero());
-                ps.setString(6, usuario.getCep());
-                ps.setInt(7, usuario.getId());
+                ps.setString(3, usuario.getSenha());
+                ps.setString(4, usuario.getLogradouro());
+                ps.setString(5, usuario.getBairro());
+                ps.setString(6, usuario.getNumero());
+                ps.setString(7, usuario.getCep());
+                ps.setInt(8, usuario.getId());
                 
                 ps.executeUpdate();
             }
@@ -63,9 +65,35 @@ public class UsuarioRepository extends AbstractRepository {
         });
     }
 
+    public void updatePerfil(Integer id, String nome, String logradouro, String bairro, String numero, String cep) {
+        executeWithoutResult(connection -> {
+            String sql = "UPDATE USUARIO SET nome = ?, logradouro = ?, bairro = ?, numero = ?, CEP = ? WHERE id = ?";
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                ps.setString(1, nome);
+                ps.setString(2, logradouro);
+                ps.setString(3, bairro);
+                ps.setString(4, numero);
+                ps.setString(5, cep);
+                ps.setInt(6, id);
+                ps.executeUpdate();
+            }
+        });
+    }
+
+    public void updateSenha(Integer id, String novaSenha) {
+        executeWithoutResult(connection -> {
+            String sql = "UPDATE USUARIO SET senha = ? WHERE id = ?";
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                ps.setString(1, novaSenha);
+                ps.setInt(2, id);
+                ps.executeUpdate();
+            }
+        });
+    }
+
     public Optional<Usuario> findById(Integer id) {
         return execute(connection -> {
-            String sql = "SELECT id, nome, email, logradouro, bairro, numero, CEP FROM USUARIO WHERE id = ?";
+            String sql = "SELECT id, nome, email, senha, logradouro, bairro, numero, CEP FROM USUARIO WHERE id = ?";
             Usuario usuario = null;
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
                 ps.setInt(1, id);
@@ -79,9 +107,25 @@ public class UsuarioRepository extends AbstractRepository {
         });
     }
 
+    public Optional<Usuario> findByEmail(String email) {
+        return execute(connection -> {
+            String sql = "SELECT id, nome, email, senha, logradouro, bairro, numero, CEP FROM USUARIO WHERE email = ?";
+            Usuario usuario = null;
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                ps.setString(1, email);
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        usuario = mapRow(rs);
+                    }
+                }
+            }
+            return Optional.ofNullable(usuario);
+        });
+    }
+
     public List<Usuario> findAll() {
         return execute(connection -> {
-            String sql = "SELECT id, nome, email, logradouro, bairro, numero, CEP FROM USUARIO";
+            String sql = "SELECT id, nome, email, senha, logradouro, bairro, numero, CEP FROM USUARIO";
             List<Usuario> usuarios = new ArrayList<>();
             try (PreparedStatement ps = connection.prepareStatement(sql);
                  ResultSet rs = ps.executeQuery()) {
@@ -108,6 +152,7 @@ public class UsuarioRepository extends AbstractRepository {
         usuario.setId(rs.getInt("id"));
         usuario.setNome(rs.getString("nome"));
         usuario.setEmail(rs.getString("email"));
+        usuario.setSenha(rs.getString("senha"));
         usuario.setLogradouro(rs.getString("logradouro"));
         usuario.setBairro(rs.getString("bairro"));
         usuario.setNumero(rs.getString("numero"));

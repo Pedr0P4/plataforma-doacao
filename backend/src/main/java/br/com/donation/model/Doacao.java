@@ -14,6 +14,7 @@ public class Doacao {
     private Integer doadorId;
     private Integer donatarioId;
     private Integer localDoacaoId;
+    private String urlImagem;
     private Usuario doador;
     private Usuario donatario;
     private LocalDoacao localDoacao;

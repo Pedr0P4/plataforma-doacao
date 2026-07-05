@@ -115,4 +115,20 @@ public class AvaliacaoRepository extends AbstractRepository {
         avaliacao.setDoacaoId(rs.getInt("DOACAO_id"));
         return avaliacao;
     }
+
+    public List<Avaliacao> findByDoacaoId(Integer doacaoId) {
+        return execute(connection -> {
+            String sql = "SELECT id, data_avaliacao, comentario, nota, papel_avaliador, DOACAO_id FROM AVALIACAO WHERE DOACAO_id = ?";
+            List<Avaliacao> avaliacoes = new ArrayList<>();
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                ps.setInt(1, doacaoId);
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        avaliacoes.add(mapRow(rs));
+                    }
+                }
+            }
+            return avaliacoes;
+        });
+    }
 }

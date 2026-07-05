@@ -1,4 +1,4 @@
-package br.com.donation.model;
+package br.com.donation.dto.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,13 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Usuario {
+public class AuthResponseDTO {
+    private String token;
+    private String tipo;
     private Integer id;
     private String nome;
     private String email;
-    private String senha;
-    private String logradouro;
-    private String bairro;
-    private String numero;
-    private String cep;
 }
+

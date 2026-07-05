@@ -119,4 +119,39 @@ public class VagaVoluntarioRepository extends AbstractRepository {
         vaga.setFuncao(rs.getString("funcao"));
         return vaga;
     }
+
+    public List<VagaVoluntario> findByCampanhaId(Integer campanhaId) {
+        return execute(connection -> {
+            String sql = "SELECT CAMPANHA_DOACAO_id, codigo_vaga, data_inicio, data_fim, quantidade_vagas, descricao_atividades, carga_horaria_semanal, funcao FROM VAGA_VOLUNTARIO WHERE CAMPANHA_DOACAO_id = ?";
+            List<VagaVoluntario> vagas = new ArrayList<>();
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                ps.setInt(1, campanhaId);
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        vagas.add(mapRow(rs));
+                    }
+                }
+            }
+            return vagas;
+        });
+    }
+
+    public Integer findMaxCodigoVagaByCampanha(Integer campanhaId) {
+        return execute(connection -> {
+            String sql = "SELECT MAX(codigo_vaga) as max_id FROM VAGA_VOLUNTARIO WHERE CAMPANHA_DOACAO_id = ?";
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                ps.setInt(1, campanhaId);
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        int max = rs.getInt("max_id");
+                        if (rs.wasNull()) {
+                            return 0;
+                        }
+                        return max;
+                    }
+                }
+            }
+            return 0;
+        });
+    }
 }
