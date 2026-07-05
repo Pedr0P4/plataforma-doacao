@@ -1,4 +1,4 @@
-package br.com.donation.dto;
+package br.com.donation.dto.avaliacao;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -27,3 +27,4 @@ public class AvaliacaoDTO {
     private String papelAvaliador;
     private Integer doacaoId;
 }
+

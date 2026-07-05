@@ -1,7 +1,7 @@
 package br.com.donation.controller;
 
-import br.com.donation.dto.AtualizarStatusInscricaoDTO;
-import br.com.donation.dto.InscricaoDTO;
+import br.com.donation.dto.inscricao.AtualizarStatusInscricaoDTO;
+import br.com.donation.dto.inscricao.InscricaoDTO;
 import br.com.donation.service.InscricaoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,3 +55,4 @@ public class InscricaoController {
         return ResponseEntity.ok(inscricaoService.listarMinhasInscricoes(extrairUserId(principal)));
     }
 }
+

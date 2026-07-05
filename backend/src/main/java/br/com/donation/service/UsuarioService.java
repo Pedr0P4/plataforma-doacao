@@ -1,10 +1,10 @@
 package br.com.donation.service;
 
-import br.com.donation.dto.InstituicaoDTO;
-import br.com.donation.dto.PessoaFisicaDTO;
-import br.com.donation.dto.UsuarioDTO;
-import br.com.donation.dto.AtualizarPerfilDTO;
-import br.com.donation.dto.AlterarSenhaDTO;
+import br.com.donation.dto.usuario.InstituicaoDTO;
+import br.com.donation.dto.usuario.PessoaFisicaDTO;
+import br.com.donation.dto.usuario.UsuarioDTO;
+import br.com.donation.dto.usuario.AtualizarPerfilDTO;
+import br.com.donation.dto.auth.AlterarSenhaDTO;
 import br.com.donation.exception.ResourceNotFoundException;
 import br.com.donation.exception.BusinessException;
 import br.com.donation.model.Instituicao;
@@ -115,3 +115,4 @@ public class UsuarioService {
         dto.setCep(u.getCep());
     }
 }
+

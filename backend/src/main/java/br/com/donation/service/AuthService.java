@@ -1,6 +1,11 @@
 package br.com.donation.service;
+import br.com.donation.dto.auth.LoginDTO;
+import br.com.donation.dto.usuario.UsuarioDTO;
+import br.com.donation.dto.auth.AuthResponseDTO;
+import br.com.donation.dto.usuario.InstituicaoDTO;
+import br.com.donation.dto.usuario.PessoaFisicaDTO;
 
-import br.com.donation.dto.*;
+
 import br.com.donation.exception.AuthenticationException;
 import br.com.donation.exception.DuplicateResourceException;
 import br.com.donation.model.Instituicao;
@@ -126,3 +131,4 @@ public class AuthService {
         return "USUARIO";
     }
 }
+

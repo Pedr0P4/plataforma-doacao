@@ -1,11 +1,10 @@
 package br.com.donation.service;
 
-import br.com.donation.dto.InscricaoDTO;
+import br.com.donation.dto.inscricao.InscricaoDTO;
 import br.com.donation.exception.BusinessException;
 import br.com.donation.exception.ResourceNotFoundException;
 import br.com.donation.model.CampanhaDoacao;
 import br.com.donation.model.Inscricao;
-import br.com.donation.model.VagaVoluntario;
 import br.com.donation.repository.CampanhaDoacaoRepository;
 import br.com.donation.repository.InscricaoRepository;
 import br.com.donation.repository.PessoaFisicaRepository;
@@ -39,7 +38,7 @@ public class InscricaoService {
     public InscricaoDTO inscrever(Integer pessoaFisicaId, Integer campanhaId, Integer codigoVaga) {
         validarSePessoaFisica(pessoaFisicaId);
 
-        VagaVoluntario vaga = vagaVoluntarioRepository.findById(campanhaId, codigoVaga)
+        vagaVoluntarioRepository.findById(campanhaId, codigoVaga)
                 .orElseThrow(() -> new ResourceNotFoundException("Vaga de Voluntariado", codigoVaga));
 
         if (inscricaoRepository.findById(pessoaFisicaId, campanhaId, codigoVaga).isPresent()) {
@@ -127,3 +126,4 @@ public class InscricaoService {
         return dto;
     }
 }
+

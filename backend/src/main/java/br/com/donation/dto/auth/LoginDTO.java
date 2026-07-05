@@ -1,4 +1,4 @@
-package br.com.donation.dto;
+package br.com.donation.dto.auth;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -20,3 +20,4 @@ public class LoginDTO {
     @NotBlank(message = "Senha é obrigatória")
     private String senha;
 }
+

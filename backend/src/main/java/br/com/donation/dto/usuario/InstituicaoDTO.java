@@ -1,4 +1,4 @@
-package br.com.donation.dto;
+package br.com.donation.dto.usuario;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -6,19 +6,18 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-
 @EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PessoaFisicaDTO extends UsuarioDTO {
+public class InstituicaoDTO extends UsuarioDTO {
 
-    @NotBlank(message = "CPF é obrigatório")
-    private String cpf;
+    @NotBlank(message = "CNPJ é obrigatório")
+    private String cnpj;
 
-    private LocalDate dataNascimento;
+    private String site;
 
     @NotBlank(message = "Senha é obrigatória")
     private String senha;
 }
+

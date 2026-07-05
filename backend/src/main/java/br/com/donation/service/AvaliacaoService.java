@@ -1,6 +1,6 @@
 package br.com.donation.service;
 
-import br.com.donation.dto.AvaliacaoDTO;
+import br.com.donation.dto.avaliacao.AvaliacaoDTO;
 import br.com.donation.exception.BusinessException;
 import br.com.donation.exception.ResourceNotFoundException;
 import br.com.donation.model.Avaliacao;
@@ -82,3 +82,4 @@ public class AvaliacaoService {
                 .build();
     }
 }
+

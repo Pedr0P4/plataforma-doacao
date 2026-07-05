@@ -1,4 +1,4 @@
-package br.com.donation.dto;
+package br.com.donation.dto.auth;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -18,3 +18,4 @@ public class AlterarSenhaDTO {
     @NotBlank(message = "A nova senha é obrigatória")
     private String novaSenha;
 }
+

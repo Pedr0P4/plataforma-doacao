@@ -1,9 +1,9 @@
 package br.com.donation.controller;
 
-import br.com.donation.dto.AuthResponseDTO;
-import br.com.donation.dto.InstituicaoDTO;
-import br.com.donation.dto.LoginDTO;
-import br.com.donation.dto.PessoaFisicaDTO;
+import br.com.donation.dto.auth.AuthResponseDTO;
+import br.com.donation.dto.usuario.InstituicaoDTO;
+import br.com.donation.dto.auth.LoginDTO;
+import br.com.donation.dto.usuario.PessoaFisicaDTO;
 import br.com.donation.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,3 +36,4 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 }
+

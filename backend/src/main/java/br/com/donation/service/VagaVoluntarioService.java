@@ -1,7 +1,7 @@
 package br.com.donation.service;
 
-import br.com.donation.dto.CriarVagaDTO;
-import br.com.donation.dto.VagaVoluntarioDTO;
+import br.com.donation.dto.vaga.CriarVagaDTO;
+import br.com.donation.dto.vaga.VagaVoluntarioDTO;
 import br.com.donation.exception.BusinessException;
 import br.com.donation.exception.ResourceNotFoundException;
 import br.com.donation.model.CampanhaDoacao;
@@ -52,7 +52,7 @@ public class VagaVoluntarioService {
     public void removerVaga(Integer instituicaoId, Integer campanhaId, Integer codigoVaga) {
         validarDonoCampanha(instituicaoId, campanhaId);
         
-        VagaVoluntario vaga = vagaVoluntarioRepository.findById(campanhaId, codigoVaga)
+        vagaVoluntarioRepository.findById(campanhaId, codigoVaga)
                 .orElseThrow(() -> new ResourceNotFoundException("Vaga de Voluntariado", codigoVaga));
                 
         vagaVoluntarioRepository.deleteById(campanhaId, codigoVaga);
@@ -80,3 +80,4 @@ public class VagaVoluntarioService {
                 .build();
     }
 }
+

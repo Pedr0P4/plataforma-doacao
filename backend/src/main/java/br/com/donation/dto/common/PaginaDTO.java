@@ -1,4 +1,4 @@
-package br.com.donation.dto;
+package br.com.donation.dto.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,3 +17,4 @@ public class PaginaDTO<T> {
     private int totalPages;
     private int currentPage;
 }
+

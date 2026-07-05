@@ -1,4 +1,6 @@
-package br.com.donation.dto;
+package br.com.donation.dto.doacao;
+import br.com.donation.dto.campanha.ItemDTO;
+import br.com.donation.dto.campanha.LocalDoacaoDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,3 +23,5 @@ public class DoacaoDTO {
     private List<ItemDTO> itens;
     private String urlImagem;
 }
+
+

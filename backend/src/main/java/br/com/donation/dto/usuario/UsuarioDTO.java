@@ -1,4 +1,4 @@
-package br.com.donation.dto;
+package br.com.donation.dto.usuario;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -26,3 +26,4 @@ public class UsuarioDTO {
     private String numero;
     private String cep;
 }
+

@@ -1,4 +1,4 @@
-package br.com.donation.dto;
+package br.com.donation.dto.campanha;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -26,3 +26,4 @@ public class ItemDTO {
     private String eNovo;
     private String categoria;
 }
+

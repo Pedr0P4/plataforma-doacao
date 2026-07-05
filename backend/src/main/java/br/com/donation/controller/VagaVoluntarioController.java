@@ -1,7 +1,7 @@
 package br.com.donation.controller;
 
-import br.com.donation.dto.CriarVagaDTO;
-import br.com.donation.dto.VagaVoluntarioDTO;
+import br.com.donation.dto.vaga.CriarVagaDTO;
+import br.com.donation.dto.vaga.VagaVoluntarioDTO;
 import br.com.donation.service.VagaVoluntarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,3 +46,4 @@ public class VagaVoluntarioController {
         return ResponseEntity.noContent().build();
     }
 }
+

@@ -1,9 +1,9 @@
 package br.com.donation.controller;
 
-import br.com.donation.dto.InstituicaoDTO;
-import br.com.donation.dto.PessoaFisicaDTO;
-import br.com.donation.dto.AtualizarPerfilDTO;
-import br.com.donation.dto.AlterarSenhaDTO;
+import br.com.donation.dto.usuario.InstituicaoDTO;
+import br.com.donation.dto.usuario.PessoaFisicaDTO;
+import br.com.donation.dto.usuario.AtualizarPerfilDTO;
+import br.com.donation.dto.auth.AlterarSenhaDTO;
 import br.com.donation.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,3 +54,4 @@ public class UsuarioController {
         return ResponseEntity.ok().build();
     }
 }
+

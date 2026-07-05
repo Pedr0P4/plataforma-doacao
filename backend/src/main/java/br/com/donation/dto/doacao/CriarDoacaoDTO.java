@@ -1,4 +1,5 @@
-package br.com.donation.dto;
+package br.com.donation.dto.doacao;
+import br.com.donation.dto.campanha.ItemDTO;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
@@ -19,3 +20,5 @@ public class CriarDoacaoDTO {
     @Valid
     private List<ItemDTO> itens;
 }
+
+

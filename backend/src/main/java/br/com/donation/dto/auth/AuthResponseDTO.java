@@ -1,4 +1,4 @@
-package br.com.donation.dto;
+package br.com.donation.dto.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,3 +16,4 @@ public class AuthResponseDTO {
     private String nome;
     private String email;
 }
+

@@ -1,4 +1,4 @@
-package br.com.donation.dto;
+package br.com.donation.dto.inscricao;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -13,3 +13,4 @@ public class AtualizarStatusInscricaoDTO {
     @NotBlank(message = "O status é obrigatório")
     private String status;
 }
+

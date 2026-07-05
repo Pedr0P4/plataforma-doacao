@@ -1,6 +1,6 @@
 package br.com.donation.controller;
 
-import br.com.donation.dto.AvaliacaoDTO;
+import br.com.donation.dto.avaliacao.AvaliacaoDTO;
 import br.com.donation.service.AvaliacaoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,3 +30,4 @@ public class AvaliacaoController {
         return ResponseEntity.ok(avaliacaoService.listarAvaliacoes(doacaoId));
     }
 }
+

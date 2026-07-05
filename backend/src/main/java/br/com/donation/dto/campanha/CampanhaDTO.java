@@ -1,4 +1,4 @@
-package br.com.donation.dto;
+package br.com.donation.dto.campanha;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,3 +28,4 @@ public class CampanhaDTO {
 
     private List<LocalDoacaoDTO> locais;
 }
+

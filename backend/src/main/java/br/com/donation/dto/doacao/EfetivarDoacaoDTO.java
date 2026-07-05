@@ -1,4 +1,5 @@
-package br.com.donation.dto;
+package br.com.donation.dto.doacao;
+import br.com.donation.dto.campanha.LocalDoacaoDTO;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -20,3 +21,5 @@ public class EfetivarDoacaoDTO {
     @Valid
     private LocalDoacaoDTO localDoacao;
 }
+
+

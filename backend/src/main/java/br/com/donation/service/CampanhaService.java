@@ -1,9 +1,9 @@
 package br.com.donation.service;
 
-import br.com.donation.dto.CampanhaDTO;
-import br.com.donation.dto.CriarCampanhaDTO;
-import br.com.donation.dto.LocalDoacaoDTO;
-import br.com.donation.dto.PaginaDTO;
+import br.com.donation.dto.campanha.CampanhaDTO;
+import br.com.donation.dto.campanha.CriarCampanhaDTO;
+import br.com.donation.dto.campanha.LocalDoacaoDTO;
+import br.com.donation.dto.common.PaginaDTO;
 import br.com.donation.exception.BusinessException;
 import br.com.donation.exception.ResourceNotFoundException;
 import br.com.donation.model.CampanhaDoacao;
@@ -198,3 +198,4 @@ public class CampanhaService {
         return dto;
     }
 }
+

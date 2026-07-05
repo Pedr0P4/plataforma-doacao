@@ -1,4 +1,4 @@
-package br.com.donation.dto;
+package br.com.donation.dto.campanha;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -28,3 +28,4 @@ public class CriarCampanhaDTO {
     @Valid
     private List<LocalDoacaoDTO> locais;
 }
+

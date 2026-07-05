@@ -1,10 +1,10 @@
 package br.com.donation.controller;
 
-import br.com.donation.dto.CriarDoacaoDTO;
-import br.com.donation.dto.DoacaoDTO;
-import br.com.donation.dto.EfetivarDoacaoDTO;
-import br.com.donation.dto.PaginaDTO;
-import br.com.donation.dto.UsuarioDTO;
+import br.com.donation.dto.doacao.CriarDoacaoDTO;
+import br.com.donation.dto.doacao.DoacaoDTO;
+import br.com.donation.dto.doacao.EfetivarDoacaoDTO;
+import br.com.donation.dto.common.PaginaDTO;
+import br.com.donation.dto.usuario.UsuarioDTO;
 import br.com.donation.service.DoacaoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,3 +95,4 @@ public class DoacaoController {
         return ResponseEntity.ok(doacao);
     }
 }
+

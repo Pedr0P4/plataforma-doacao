@@ -1,6 +1,6 @@
 package br.com.donation.security;
 
-import br.com.donation.dto.ErrorResponse;
+import br.com.donation.dto.common.ErrorResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.servlet.FilterChain;
@@ -76,3 +76,4 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         response.getWriter().write(objectMapper.writeValueAsString(error));
     }
 }
+

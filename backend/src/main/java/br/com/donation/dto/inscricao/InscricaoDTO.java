@@ -1,4 +1,4 @@
-package br.com.donation.dto;
+package br.com.donation.dto.inscricao;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,3 +25,4 @@ public class InscricaoDTO {
     private LocalDate dataInscricao;
     private String status;
 }
+

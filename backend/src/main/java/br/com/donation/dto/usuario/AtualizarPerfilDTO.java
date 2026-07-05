@@ -1,4 +1,4 @@
-package br.com.donation.dto;
+package br.com.donation.dto.usuario;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -10,14 +10,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class LocalDoacaoDTO {
-    private Integer id;
-
-    @NotBlank(message = "Nome do local é obrigatório")
+public class AtualizarPerfilDTO {
+    
+    @NotBlank(message = "O nome é obrigatório")
     private String nome;
-
+    
     private String logradouro;
     private String bairro;
     private String numero;
     private String cep;
 }
+
