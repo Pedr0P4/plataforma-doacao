@@ -5,7 +5,6 @@ import br.com.donation.exception.BusinessException;
 import br.com.donation.exception.ResourceNotFoundException;
 import br.com.donation.model.CampanhaDoacao;
 import br.com.donation.model.Inscricao;
-import br.com.donation.model.Usuario;
 import br.com.donation.model.VagaVoluntario;
 import br.com.donation.repository.CampanhaDoacaoRepository;
 import br.com.donation.repository.InscricaoRepository;

@@ -3,6 +3,7 @@ package br.com.donation.service;
 import br.com.donation.dto.CampanhaDTO;
 import br.com.donation.dto.CriarCampanhaDTO;
 import br.com.donation.dto.LocalDoacaoDTO;
+import br.com.donation.dto.PaginaDTO;
 import br.com.donation.exception.BusinessException;
 import br.com.donation.exception.ResourceNotFoundException;
 import br.com.donation.model.CampanhaDoacao;
@@ -55,7 +56,7 @@ public class CampanhaService {
         campanha.setStatus("ATIVA");
 
         if (imagem != null && !imagem.isEmpty()) {
-            String urlImagem = storageService.salvarImagem(imagem);
+            String urlImagem = storageService.salvarImagem(imagem, "campanhas");
             campanha.setUrlImagemCapa(urlImagem);
         }
 
@@ -74,7 +75,7 @@ public class CampanhaService {
         verificarSeInstituicao(userId);
         CampanhaDoacao campanha = buscarCampanhaSeDono(userId, campanhaId);
         
-        String urlImagem = storageService.salvarImagem(file);
+        String urlImagem = storageService.salvarImagem(file, "campanhas");
         campanha.setUrlImagemCapa(urlImagem);
         
         campanhaRepository.save(campanha);
@@ -97,10 +98,20 @@ public class CampanhaService {
         campanhaLocalRepository.deleteById(campanhaId, localId);
     }
 
-    public List<CampanhaDTO> listarCampanhas() {
-        return campanhaRepository.findAll().stream()
+    public PaginaDTO<CampanhaDTO> listarCampanhas(int page, int size) {
+        List<CampanhaDTO> content = campanhaRepository.findAll(page, size).stream()
                 .map(this::converterParaDTO)
                 .collect(Collectors.toList());
+                
+        int totalElements = campanhaRepository.countAll();
+        int totalPages = (int) Math.ceil((double) totalElements / size);
+        
+        return PaginaDTO.<CampanhaDTO>builder()
+                .content(content)
+                .totalElements(totalElements)
+                .totalPages(totalPages)
+                .currentPage(page)
+                .build();
     }
 
     public List<CampanhaDTO> listarMinhasCampanhas(Integer userId) {

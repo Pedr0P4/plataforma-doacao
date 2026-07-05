@@ -65,6 +65,32 @@ public class UsuarioRepository extends AbstractRepository {
         });
     }
 
+    public void updatePerfil(Integer id, String nome, String logradouro, String bairro, String numero, String cep) {
+        executeWithoutResult(connection -> {
+            String sql = "UPDATE USUARIO SET nome = ?, logradouro = ?, bairro = ?, numero = ?, CEP = ? WHERE id = ?";
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                ps.setString(1, nome);
+                ps.setString(2, logradouro);
+                ps.setString(3, bairro);
+                ps.setString(4, numero);
+                ps.setString(5, cep);
+                ps.setInt(6, id);
+                ps.executeUpdate();
+            }
+        });
+    }
+
+    public void updateSenha(Integer id, String novaSenha) {
+        executeWithoutResult(connection -> {
+            String sql = "UPDATE USUARIO SET senha = ? WHERE id = ?";
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                ps.setString(1, novaSenha);
+                ps.setInt(2, id);
+                ps.executeUpdate();
+            }
+        });
+    }
+
     public Optional<Usuario> findById(Integer id) {
         return execute(connection -> {
             String sql = "SELECT id, nome, email, senha, logradouro, bairro, numero, CEP FROM USUARIO WHERE id = ?";

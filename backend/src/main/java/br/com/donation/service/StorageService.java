@@ -17,7 +17,7 @@ import java.util.UUID;
 public class StorageService {
 
     // Define a pasta base de uploads na raiz do projeto backend
-    private final Path rootLocation = Paths.get("uploads/campanhas");
+    private final Path rootLocation = Paths.get("uploads");
 
     @PostConstruct
     public void init() {
@@ -29,12 +29,15 @@ public class StorageService {
         }
     }
 
-    public String salvarImagem(MultipartFile file) {
+    public String salvarImagem(MultipartFile file, String subfolder) {
         if (file.isEmpty()) {
             throw new BusinessException("Falha ao armazenar arquivo vazio.");
         }
 
         try {
+            Path folderLocation = rootLocation.resolve(subfolder);
+            Files.createDirectories(folderLocation);
+
             // Pega a extensão original do arquivo
             String originalFilename = file.getOriginalFilename();
             String extension = "";
@@ -44,10 +47,10 @@ public class StorageService {
 
             // Gera um nome único para evitar sobrescritas
             String newFilename = UUID.randomUUID().toString() + extension;
-            Path destinationFile = this.rootLocation.resolve(Paths.get(newFilename))
+            Path destinationFile = folderLocation.resolve(Paths.get(newFilename))
                     .normalize().toAbsolutePath();
 
-            if (!destinationFile.getParent().equals(this.rootLocation.toAbsolutePath())) {
+            if (!destinationFile.getParent().equals(folderLocation.toAbsolutePath())) {
                 // Segurança extra para evitar Path Traversal
                 throw new BusinessException("Não é possível armazenar o arquivo fora do diretório atual.");
             }
@@ -57,7 +60,7 @@ public class StorageService {
             }
 
             // Retorna a URL relativa que será exposta pelo WebConfig
-            return "/uploads/campanhas/" + newFilename;
+            return "/uploads/" + subfolder + "/" + newFilename;
         } catch (IOException e) {
             throw new BusinessException("Falha ao armazenar a imagem: " + e.getMessage());
         }

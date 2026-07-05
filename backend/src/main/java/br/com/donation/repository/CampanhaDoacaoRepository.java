@@ -94,17 +94,33 @@ public class CampanhaDoacaoRepository extends AbstractRepository {
         });
     }
 
-    public List<CampanhaDoacao> findAll() {
+    public List<CampanhaDoacao> findAll(int page, int size) {
         return execute(connection -> {
-            String sql = "SELECT * FROM CAMPANHA_DOACAO";
+            String sql = "SELECT * FROM CAMPANHA_DOACAO LIMIT ? OFFSET ?";
             List<CampanhaDoacao> campanhas = new ArrayList<>();
-            try (PreparedStatement ps = connection.prepareStatement(sql);
-                 ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    campanhas.add(mapRow(rs));
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                ps.setInt(1, size);
+                ps.setInt(2, page * size);
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        campanhas.add(mapRow(rs));
+                    }
                 }
             }
             return campanhas;
+        });
+    }
+
+    public int countAll() {
+        return execute(connection -> {
+            String sql = "SELECT COUNT(*) FROM CAMPANHA_DOACAO";
+            try (PreparedStatement ps = connection.prepareStatement(sql);
+                 ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+            return 0;
         });
     }
 

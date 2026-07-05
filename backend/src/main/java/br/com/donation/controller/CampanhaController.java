@@ -3,6 +3,7 @@ package br.com.donation.controller;
 import br.com.donation.dto.CampanhaDTO;
 import br.com.donation.dto.CriarCampanhaDTO;
 import br.com.donation.dto.LocalDoacaoDTO;
+import br.com.donation.dto.PaginaDTO;
 import br.com.donation.service.CampanhaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +37,10 @@ public class CampanhaController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CampanhaDTO>> listarCampanhas() {
-        return ResponseEntity.ok(campanhaService.listarCampanhas());
+    public ResponseEntity<PaginaDTO<CampanhaDTO>> listarCampanhas(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(campanhaService.listarCampanhas(page, size));
     }
 
     @GetMapping("/{id}")

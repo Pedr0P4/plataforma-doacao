@@ -3,13 +3,16 @@ package br.com.donation.controller;
 import br.com.donation.dto.CriarDoacaoDTO;
 import br.com.donation.dto.DoacaoDTO;
 import br.com.donation.dto.EfetivarDoacaoDTO;
+import br.com.donation.dto.PaginaDTO;
 import br.com.donation.dto.UsuarioDTO;
 import br.com.donation.service.DoacaoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.security.Principal;
 import java.util.List;
@@ -26,16 +29,30 @@ public class DoacaoController {
     }
 
 
-    @PostMapping
-    public ResponseEntity<DoacaoDTO> criarDoacao(Principal principal, @Valid @RequestBody CriarDoacaoDTO dto) {
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<DoacaoDTO> criarDoacao(
+            Principal principal, 
+            @Valid @RequestPart("doacao") CriarDoacaoDTO dto,
+            @RequestPart(value = "imagem", required = false) MultipartFile imagem) {
         Integer doadorId = extrairUserId(principal);
-        DoacaoDTO doacao = doacaoService.criarDoacao(doadorId, dto);
+        DoacaoDTO doacao = doacaoService.criarDoacao(doadorId, dto, imagem);
         return new ResponseEntity<>(doacao, HttpStatus.CREATED);
     }
 
+    @PostMapping(value = "/{id}/imagem", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> atualizarImagem(
+            Principal principal,
+            @PathVariable Integer id,
+            @RequestPart("imagem") MultipartFile imagem) {
+        String urlImagem = doacaoService.atualizarImagem(extrairUserId(principal), id, imagem);
+        return ResponseEntity.ok(urlImagem);
+    }
+
     @GetMapping("/disponiveis")
-    public ResponseEntity<List<DoacaoDTO>> listarDisponiveis() {
-        return ResponseEntity.ok(doacaoService.listarDisponiveis());
+    public ResponseEntity<PaginaDTO<DoacaoDTO>> listarDisponiveis(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return ResponseEntity.ok(doacaoService.listarDisponiveis(page, size));
     }
 
     @GetMapping("/{id}")

@@ -2,11 +2,15 @@ package br.com.donation.controller;
 
 import br.com.donation.dto.InstituicaoDTO;
 import br.com.donation.dto.PessoaFisicaDTO;
+import br.com.donation.dto.AtualizarPerfilDTO;
+import br.com.donation.dto.AlterarSenhaDTO;
 import br.com.donation.service.UsuarioService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -34,5 +38,19 @@ public class UsuarioController {
     @GetMapping("/instituicao/{id}")
     public ResponseEntity<InstituicaoDTO> buscarInstituicao(@PathVariable Integer id) {
         return ResponseEntity.ok(usuarioService.buscarInstituicao(id));
+    }
+
+    @PutMapping("/perfil")
+    public ResponseEntity<Void> atualizarPerfil(Principal principal, @Valid @RequestBody AtualizarPerfilDTO dto) {
+        Integer userId = Integer.parseInt(principal.getName());
+        usuarioService.atualizarPerfil(userId, dto);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/senha")
+    public ResponseEntity<Void> alterarSenha(Principal principal, @Valid @RequestBody AlterarSenhaDTO dto) {
+        Integer userId = Integer.parseInt(principal.getName());
+        usuarioService.alterarSenha(userId, dto);
+        return ResponseEntity.ok().build();
     }
 }

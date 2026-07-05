@@ -19,4 +19,5 @@ public class DoacaoDTO {
     private String nomeDonatario;
     private LocalDoacaoDTO localDoacao;
     private List<ItemDTO> itens;
+    private String urlImagem;
 }

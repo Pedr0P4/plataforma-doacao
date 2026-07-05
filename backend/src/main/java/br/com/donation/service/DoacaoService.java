@@ -14,6 +14,7 @@ import br.com.donation.repository.LocalDoacaoRepository;
 import br.com.donation.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -37,11 +38,19 @@ public class DoacaoService {
     private UsuarioRepository usuarioRepository;
 
 
-    public DoacaoDTO criarDoacao(Integer doadorId, CriarDoacaoDTO dto) {
+    @Autowired
+    private StorageService storageService;
+
+    public DoacaoDTO criarDoacao(Integer doadorId, CriarDoacaoDTO dto, MultipartFile imagem) {
         Doacao doacao = new Doacao();
         doacao.setDoadorId(doadorId);
         // donatarioId e localDoacaoId ficam nulos inicialmente
         
+        if (imagem != null && !imagem.isEmpty()) {
+            String urlImagem = storageService.salvarImagem(imagem, "doacoes");
+            doacao.setUrlImagem(urlImagem);
+        }
+
         doacao = doacaoRepository.save(doacao);
 
         for (ItemDTO itemDto : dto.getItens()) {
@@ -59,10 +68,20 @@ public class DoacaoService {
         return buscarPorId(doacao.getId());
     }
 
-    public List<DoacaoDTO> listarDisponiveis() {
-        return doacaoRepository.findDisponiveis().stream()
+    public PaginaDTO<DoacaoDTO> listarDisponiveis(int page, int size) {
+        List<DoacaoDTO> content = doacaoRepository.findDisponiveis(page, size).stream()
                 .map(this::converterParaDTOCompleto)
                 .collect(Collectors.toList());
+                
+        int totalElements = doacaoRepository.countDisponiveis();
+        int totalPages = (int) Math.ceil((double) totalElements / size);
+        
+        return PaginaDTO.<DoacaoDTO>builder()
+                .content(content)
+                .totalElements(totalElements)
+                .totalPages(totalPages)
+                .currentPage(page)
+                .build();
     }
 
     public List<DoacaoDTO> listarMinhasDoacoes(Integer doadorId) {
@@ -169,6 +188,22 @@ public class DoacaoService {
         return buscarPorId(doacao.getId());
     }
 
+    public String atualizarImagem(Integer doadorId, Integer doacaoId, MultipartFile file) {
+        Doacao doacao = doacaoRepository.findById(doacaoId)
+                .orElseThrow(() -> new ResourceNotFoundException("Doação", doacaoId));
+
+        if (!doacao.getDoadorId().equals(doadorId)) {
+            throw new BusinessException("Apenas o doador pode alterar a imagem da doação.");
+        }
+        
+        String urlImagem = storageService.salvarImagem(file, "doacoes");
+        doacao.setUrlImagem(urlImagem);
+        
+        doacaoRepository.save(doacao);
+        
+        return urlImagem;
+    }
+
     // --- MÉTODOS AUXILIARES ---
 
     private DoacaoDTO converterParaDTOCompleto(Doacao doacao) {
@@ -176,6 +211,7 @@ public class DoacaoService {
         dto.setId(doacao.getId());
         dto.setDoadorId(doacao.getDoadorId());
         dto.setDonatarioId(doacao.getDonatarioId());
+        dto.setUrlImagem(doacao.getUrlImagem());
 
         usuarioRepository.findById(doacao.getDoadorId())
                 .ifPresent(u -> dto.setNomeDoador(u.getNome()));

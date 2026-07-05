@@ -3,7 +3,10 @@ package br.com.donation.service;
 import br.com.donation.dto.InstituicaoDTO;
 import br.com.donation.dto.PessoaFisicaDTO;
 import br.com.donation.dto.UsuarioDTO;
+import br.com.donation.dto.AtualizarPerfilDTO;
+import br.com.donation.dto.AlterarSenhaDTO;
 import br.com.donation.exception.ResourceNotFoundException;
+import br.com.donation.exception.BusinessException;
 import br.com.donation.model.Instituicao;
 import br.com.donation.model.PessoaFisica;
 import br.com.donation.model.Usuario;
@@ -12,6 +15,7 @@ import br.com.donation.repository.PessoaFisicaRepository;
 import br.com.donation.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -78,6 +82,27 @@ public class UsuarioService {
         preencherDadosUsuario(dto, usuario);
 
         return dto;
+    }
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    public void atualizarPerfil(Integer userId, AtualizarPerfilDTO dto) {
+        if (!usuarioRepository.findById(userId).isPresent()) {
+            throw new ResourceNotFoundException("Usuário", userId);
+        }
+        usuarioRepository.updatePerfil(userId, dto.getNome(), dto.getLogradouro(), dto.getBairro(), dto.getNumero(), dto.getCep());
+    }
+
+    public void alterarSenha(Integer userId, AlterarSenhaDTO dto) {
+        Usuario usuario = usuarioRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário", userId));
+
+        if (!passwordEncoder.matches(dto.getSenhaAtual(), usuario.getSenha())) {
+            throw new BusinessException("A senha atual informada está incorreta.");
+        }
+
+        usuarioRepository.updateSenha(userId, passwordEncoder.encode(dto.getNovaSenha()));
     }
 
     private void preencherDadosUsuario(UsuarioDTO dto, Usuario u) {
