@@ -87,4 +87,20 @@ public class InteresseRepository extends AbstractRepository {
         interesse.setDoacaoId(rs.getInt("DOACAO_id"));
         return interesse;
     }
+
+    public List<Interesse> findByDoacaoId(Integer doacaoId) {
+        return execute(connection -> {
+            String sql = "SELECT USUARIO_id, DOACAO_id FROM INTERESSE WHERE DOACAO_id = ?";
+            List<Interesse> lista = new ArrayList<>();
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                ps.setInt(1, doacaoId);
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        lista.add(mapRow(rs));
+                    }
+                }
+            }
+            return lista;
+        });
+    }
 }

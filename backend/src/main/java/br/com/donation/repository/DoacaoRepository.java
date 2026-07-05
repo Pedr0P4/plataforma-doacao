@@ -117,4 +117,50 @@ public class DoacaoRepository extends AbstractRepository {
         doacao.setLocalDoacaoId(rs.wasNull() ? null : localId);
         return doacao;
     }
+
+    public List<Doacao> findByDoadorId(Integer doadorId) {
+        return execute(connection -> {
+            String sql = "SELECT id, doador_id, donatario_id, LOCAL_DOACAO_id FROM DOACAO WHERE doador_id = ?";
+            List<Doacao> doacoes = new ArrayList<>();
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                ps.setInt(1, doadorId);
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        doacoes.add(mapRow(rs));
+                    }
+                }
+            }
+            return doacoes;
+        });
+    }
+
+    public List<Doacao> findByDonatarioId(Integer donatarioId) {
+        return execute(connection -> {
+            String sql = "SELECT id, doador_id, donatario_id, LOCAL_DOACAO_id FROM DOACAO WHERE donatario_id = ?";
+            List<Doacao> doacoes = new ArrayList<>();
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                ps.setInt(1, donatarioId);
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        doacoes.add(mapRow(rs));
+                    }
+                }
+            }
+            return doacoes;
+        });
+    }
+
+    public List<Doacao> findDisponiveis() {
+        return execute(connection -> {
+            String sql = "SELECT id, doador_id, donatario_id, LOCAL_DOACAO_id FROM DOACAO WHERE donatario_id IS NULL";
+            List<Doacao> doacoes = new ArrayList<>();
+            try (PreparedStatement ps = connection.prepareStatement(sql);
+                 ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    doacoes.add(mapRow(rs));
+                }
+            }
+            return doacoes;
+        });
+    }
 }
