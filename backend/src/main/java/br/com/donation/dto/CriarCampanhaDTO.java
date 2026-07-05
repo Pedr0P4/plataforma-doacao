@@ -1,28 +1,30 @@
-package br.com.donation.model;
+package br.com.donation.dto;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CampanhaDoacao {
-    private Integer id;
-    private Integer instituicaoUsuarioId;
-    
+public class CriarCampanhaDTO {
+
+    @NotBlank(message = "O título da campanha é obrigatório")
     private String titulo;
+
     private String descricao;
-    private String urlImagemCapa;
     private LocalDate dataInicio;
     private LocalDate dataFim;
-    private String status;
     private String itensFoco;
     private Integer metaVoluntarios;
-    
-    private Instituicao instituicao;
+
+    @Valid
+    private List<LocalDoacaoDTO> locais;
 }

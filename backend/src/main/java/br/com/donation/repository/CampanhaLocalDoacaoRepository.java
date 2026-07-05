@@ -87,4 +87,20 @@ public class CampanhaLocalDoacaoRepository extends AbstractRepository {
         assoc.setLocalDoacaoId(rs.getInt("LOCAL_DOACAO_id"));
         return assoc;
     }
+
+    public List<CampanhaLocalDoacao> findByCampanhaId(Integer campanhaId) {
+        return execute(connection -> {
+            String sql = "SELECT CAMPANHA_DOACAO_id, LOCAL_DOACAO_id FROM CAMPANHA_LOCAL_DOACAO WHERE CAMPANHA_DOACAO_id = ?";
+            List<CampanhaLocalDoacao> lista = new ArrayList<>();
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                ps.setInt(1, campanhaId);
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        lista.add(mapRow(rs));
+                    }
+                }
+            }
+            return lista;
+        });
+    }
 }
