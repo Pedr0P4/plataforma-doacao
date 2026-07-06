@@ -51,8 +51,10 @@ public class DoacaoController {
     @GetMapping("/disponiveis")
     public ResponseEntity<PaginaDTO<DoacaoDTO>> listarDisponiveis(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        return ResponseEntity.ok(doacaoService.listarDisponiveis(page, size));
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String categoria,
+            @RequestParam(required = false) String busca) {
+        return ResponseEntity.ok(doacaoService.listarDisponiveis(page, size, categoria, busca));
     }
 
     @GetMapping("/{id}")

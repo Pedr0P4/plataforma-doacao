@@ -44,7 +44,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/usuarios/instituicao", "/api/usuarios/instituicao/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/doacoes/disponiveis").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/doacoes/disponiveis", "/api/doacoes/{id:[0-9]+}").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/campanhas").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/campanhas/{id}").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/campanhas/{id}/vagas").permitAll()

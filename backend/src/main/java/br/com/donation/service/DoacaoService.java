@@ -48,6 +48,9 @@ public class DoacaoService {
     @Autowired
     private StorageService storageService;
 
+    @Autowired
+    private NotificationService notificationService;
+
     public DoacaoDTO criarDoacao(Integer doadorId, CriarDoacaoDTO dto, MultipartFile imagem) {
         Doacao doacao = new Doacao();
         doacao.setDoadorId(doadorId);
@@ -76,11 +79,15 @@ public class DoacaoService {
     }
 
     public PaginaDTO<DoacaoDTO> listarDisponiveis(int page, int size) {
-        List<DoacaoDTO> content = doacaoRepository.findDisponiveis(page, size).stream()
+        return listarDisponiveis(page, size, null, null);
+    }
+
+    public PaginaDTO<DoacaoDTO> listarDisponiveis(int page, int size, String categoria, String busca) {
+        List<DoacaoDTO> content = doacaoRepository.findDisponiveis(page, size, categoria, busca).stream()
                 .map(this::converterParaDTOCompleto)
                 .collect(Collectors.toList());
                 
-        int totalElements = doacaoRepository.countDisponiveis();
+        int totalElements = doacaoRepository.countDisponiveis(categoria, busca);
         int totalPages = (int) Math.ceil((double) totalElements / size);
         
         return PaginaDTO.<DoacaoDTO>builder()
@@ -126,6 +133,12 @@ public class DoacaoService {
         interesse.setUsuarioId(userId);
         interesse.setDoacaoId(doacaoId);
         interesseRepository.save(interesse);
+
+        usuarioRepository.findById(userId).ifPresent(u -> {
+            String msg = "O usuário " + u.getNome() + " demonstrou interesse na sua doação!";
+            notificationService.notificarUsuario(doacao.getDoadorId(), "NOVO_INTERESSE", 
+                java.util.Map.of("doacaoId", doacaoId, "mensagem", msg, "interessadoNome", u.getNome()));
+        });
     }
 
     public void removerInteresse(Integer userId, Integer doacaoId) {
