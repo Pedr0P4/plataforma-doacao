@@ -4,7 +4,18 @@ import br.com.donation.dto.usuario.UsuarioDTO;
 import br.com.donation.dto.auth.AuthResponseDTO;
 import br.com.donation.dto.usuario.InstituicaoDTO;
 import br.com.donation.dto.usuario.PessoaFisicaDTO;
-
+import br.com.donation.dto.auth.EsqueciSenhaDTO;
+import br.com.donation.dto.auth.EsqueciSenhaResponseDTO;
+import br.com.donation.dto.auth.RegistroDTO;
+import br.com.donation.dto.auth.ResetSenhaDTO;
+import br.com.donation.dto.auth.VerifyResponseDTO;
+import br.com.donation.exception.BusinessException;
+import br.com.donation.exception.ResourceNotFoundException;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import br.com.donation.exception.AuthenticationException;
 import br.com.donation.exception.DuplicateResourceException;
@@ -101,6 +112,126 @@ public class AuthService {
                 .nome(usuario.getNome())
                 .email(usuario.getEmail())
                 .build();
+    }
+
+
+    public void adicionarCookieToken(HttpServletResponse response, String token) {
+        ResponseCookie cookie = ResponseCookie.from("token", token)
+                .httpOnly(true)
+                .path("/")
+                .maxAge(jwtUtil.getExpiration() / 1000)
+                .sameSite("Lax")
+                .build();
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+    }
+
+    public void removerCookieToken(HttpServletResponse response) {
+        ResponseCookie cookie = ResponseCookie.from("token", "")
+                .httpOnly(true)
+                .path("/")
+                .maxAge(0)
+                .sameSite("Lax")
+                .build();
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+    }
+
+    public AuthResponseDTO registrar(RegistroDTO dto) {
+        if ("PESSOA_FISICA".equalsIgnoreCase(dto.getTipo())) {
+            if (dto.getCpf() == null || dto.getCpf().trim().isEmpty()) {
+                throw new BusinessException("CPF é obrigatório para pessoa física.");
+            }
+            PessoaFisicaDTO pfDto = new PessoaFisicaDTO();
+            pfDto.setNome(dto.getNome());
+            pfDto.setEmail(dto.getEmail());
+            pfDto.setSenha(dto.getSenha());
+            pfDto.setLogradouro(dto.getLogradouro());
+            pfDto.setBairro(dto.getBairro());
+            pfDto.setNumero(dto.getNumero());
+            pfDto.setCep(dto.getCep());
+            pfDto.setCpf(dto.getCpf());
+            pfDto.setDataNascimento(dto.getDataNascimento());
+            return registrarPessoaFisica(pfDto);
+        } else if ("INSTITUICAO".equalsIgnoreCase(dto.getTipo())) {
+            if (dto.getCnpj() == null || dto.getCnpj().trim().isEmpty()) {
+                throw new BusinessException("CNPJ é obrigatório para instituição.");
+            }
+            InstituicaoDTO instDto = new InstituicaoDTO();
+            instDto.setNome(dto.getNome());
+            instDto.setEmail(dto.getEmail());
+            instDto.setSenha(dto.getSenha());
+            instDto.setLogradouro(dto.getLogradouro());
+            instDto.setBairro(dto.getBairro());
+            instDto.setNumero(dto.getNumero());
+            instDto.setCep(dto.getCep());
+            instDto.setCnpj(dto.getCnpj());
+            instDto.setSite(dto.getSite());
+            return registrarInstituicao(instDto);
+        } else {
+            throw new BusinessException("Tipo de usuário inválido. Escolha PESSOA_FISICA ou INSTITUICAO.");
+        }
+    }
+
+    public EsqueciSenhaResponseDTO esqueciSenha(EsqueciSenhaDTO dto) {
+        Usuario usuario = usuarioRepository.findByEmail(dto.getEmail())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado com o e-mail: " + dto.getEmail()));
+
+        String tokenReset = jwtUtil.gerarTokenResetSenha(usuario.getId(), usuario.getEmail());
+
+        return EsqueciSenhaResponseDTO.builder()
+                .mensagem("Token de recuperação de senha gerado com sucesso. Use o token para redefinir a senha.")
+                .tokenReset(tokenReset)
+                .build();
+    }
+
+    public void resetSenha(ResetSenhaDTO dto) {
+        if (!jwtUtil.isTokenResetValido(dto.getToken())) {
+            throw new BusinessException("Token de redefinição de senha inválido ou expirado.");
+        }
+
+        Integer userId = jwtUtil.extrairUserId(dto.getToken());
+        usuarioRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário", userId));
+
+        usuarioRepository.updateSenha(userId, passwordEncoder.encode(dto.getNovaSenha()));
+    }
+
+    public VerifyResponseDTO verificarSessao() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated() || "anonymousUser".equals(auth.getPrincipal())) {
+            return VerifyResponseDTO.builder()
+                    .logado(false)
+                    .mensagem("Usuário não está autenticado.")
+                    .usuario(null)
+                    .build();
+        }
+
+        try {
+            Integer userId = (Integer) auth.getPrincipal();
+            Usuario usuario = usuarioRepository.findById(userId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Usuário", userId));
+
+            String tipo = identificarTipoUsuario(usuario.getId());
+
+            AuthResponseDTO authDto = AuthResponseDTO.builder()
+                    .token(null)
+                    .tipo(tipo)
+                    .id(usuario.getId())
+                    .nome(usuario.getNome())
+                    .email(usuario.getEmail())
+                    .build();
+
+            return VerifyResponseDTO.builder()
+                    .logado(true)
+                    .mensagem("Usuário logado e sessão ativa.")
+                    .usuario(authDto)
+                    .build();
+        } catch (Exception e) {
+            return VerifyResponseDTO.builder()
+                    .logado(false)
+                    .mensagem("Erro ao verificar sessão: " + e.getMessage())
+                    .usuario(null)
+                    .build();
+        }
     }
 
     private void verificarEmailDuplicado(String email) {
