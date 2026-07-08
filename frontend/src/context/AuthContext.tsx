@@ -70,17 +70,17 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const login = async (data: LoginDTO) => {
     const res = await authApi.login(data);
-    setUser(res.usuario);
+    setUser(res);
   };
 
   const registrarPessoaFisica = async (data: PessoaFisicaDTO) => {
     const res = await authApi.registrarPessoaFisica(data);
-    setUser(res.usuario);
+    setUser(res);
   };
 
   const registrarInstituicao = async (data: InstituicaoDTO) => {
     const res = await authApi.registrarInstituicao(data);
-    setUser(res.usuario);
+    setUser(res);
   };
 
   const logout = async () => {

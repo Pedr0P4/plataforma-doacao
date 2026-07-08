@@ -28,13 +28,8 @@ export interface LoginDTO {
   senha?: string;
 }
 
-export interface AuthResponseDTO {
+export interface AuthResponseDTO extends UsuarioDTO {
   token: string;
-  usuario: UsuarioDTO & {
-    cpf?: string;
-    cnpj?: string;
-    tipo?: TipoUsuario;
-  };
 }
 
 export interface ItemDTO {

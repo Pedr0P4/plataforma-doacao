@@ -77,7 +77,7 @@ public class GlobalExceptionHandler {
         ErrorResponse error = ErrorResponse.builder()
                 .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .erro("Erro interno de banco de dados")
-                .mensagem("Ocorreu um erro ao acessar o banco de dados. Tente novamente mais tarde.")
+                .mensagem("Ocorreu um erro ao acessar o banco de dados: " + ex.getMessage())
                 .timestamp(LocalDateTime.now())
                 .build();
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -88,7 +88,7 @@ public class GlobalExceptionHandler {
         ErrorResponse error = ErrorResponse.builder()
                 .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .erro("Erro interno")
-                .mensagem("Ocorreu um erro inesperado. Tente novamente mais tarde.")
+                .mensagem("Ocorreu um erro inesperado. Mensagem de erro original: " + ex.getMessage())
                 .timestamp(LocalDateTime.now())
                 .build();
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);

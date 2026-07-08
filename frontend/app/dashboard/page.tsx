@@ -199,7 +199,7 @@ export default function DashboardPage() {
                       <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex justify-end">
                         <Link href={`/doacoes/${doacao.id}`}>
                           <Button variant={isEfetivada ? 'outline' : 'glow'} size="sm" className="w-full">
-                            {isEfetivada ? 'Ver Detalhes & Beneficiário' : 'Gerenciar Interessados & Escolher Beneficiário &rarr;'}
+                            {isEfetivada ? 'Ver Detalhes & Beneficiário' : 'Gerenciar Interessados & Escolher Beneficiário'}
                           </Button>
                         </Link>
                       </div>

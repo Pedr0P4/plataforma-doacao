@@ -13,6 +13,7 @@ import {
   PaginaDTO,
   UsuarioDTO
 } from '@/types';
+import { log } from 'console';
 
 const BASE_URL = 'http://localhost:8080/api';
 
