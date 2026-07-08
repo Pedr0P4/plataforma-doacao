@@ -97,8 +97,8 @@ export default function CriarCampanhaPage() {
 
       <div className="bg-gradient-to-r from-teal-700 to-emerald-700 rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden">
         <div className="space-y-2 relative z-10">
-          <Badge variant="teal" size="sm" className="bg-white/20 text-white border-none">
-            🏢 Portal de Arrecadação
+          <Badge variant="teal" size="sm" className="bg-white/20 text-white border-none flex items-center gap-1 w-fit">
+            <Building2 className="w-3.5 h-3.5" /> Portal de Arrecadação
           </Badge>
           <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
             Criar Campanha de Arrecadação

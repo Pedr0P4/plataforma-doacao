@@ -9,7 +9,7 @@ import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { Spinner } from '@/components/ui/Spinner';
-import { Building2, PlusCircle, Calendar, Users, MapPin, ChevronLeft, ChevronRight, Sparkles, HandHeart } from 'lucide-react';
+import { Building2, PlusCircle, Calendar, Users, MapPin, ChevronLeft, ChevronRight, Sparkles, HandHeart, Package } from 'lucide-react';
 
 export default function CampanhasCatalogPage() {
   const { user } = useAuth();
@@ -129,7 +129,7 @@ export default function CampanhasCatalogPage() {
                 {/* Itens Foco */}
                 {camp.itensFoco && (
                   <div className="p-3 rounded-xl bg-teal-50/80 dark:bg-teal-950/40 border border-teal-200/60 dark:border-teal-800/40 text-xs mb-4">
-                    <span className="font-bold text-teal-800 dark:text-teal-300 block mb-0.5">📌 Itens Solicitados:</span>
+                    <span className="font-bold text-teal-800 dark:text-teal-300 block mb-0.5 flex items-center gap-1"><Package className="w-3.5 h-3.5" /> Itens Solicitados:</span>
                     <span className="text-slate-600 dark:text-slate-300 line-clamp-1">{camp.itensFoco}</span>
                   </div>
                 )}

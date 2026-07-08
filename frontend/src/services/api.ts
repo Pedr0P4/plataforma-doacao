@@ -98,6 +98,9 @@ export const doacoesApi = {
     });
     return res.data;
   },
+  solicitarVoluntariado: async (id: number) => {
+    await api.post(`/vagas-voluntario/${id}/solicitar`);
+  },
   demonstrarInteresse: async (id: number) => {
     await api.post(`/doacoes/${id}/interesse`);
   },
@@ -147,6 +150,17 @@ export const campanhasApi = {
   },
   removerLocal: async (id: number, localId: number) => {
     await api.delete(`/campanhas/${id}/locais/${localId}`);
+  },
+};
+
+export const avaliacaoApi = {
+  avaliar: async (doacaoId: number, dto: { nota: number; comentario: string }) => {
+    const res = await api.post(`/doacoes/${doacaoId}/avaliacoes`, dto);
+    return res.data;
+  },
+  listar: async (doacaoId: number) => {
+    const res = await api.get(`/doacoes/${doacaoId}/avaliacoes`);
+    return res.data;
   },
 };
 

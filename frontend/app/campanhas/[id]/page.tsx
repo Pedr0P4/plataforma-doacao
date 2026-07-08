@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { Spinner } from '@/components/ui/Spinner';
-import { Building2, Calendar, MapPin, Users, Plus, Trash2, ArrowLeft, Heart, HandHeart, ShieldCheck, CheckCircle2, Award } from 'lucide-react';
+import { Building2, Calendar, MapPin, Users, Plus, Trash2, ArrowLeft, Heart, HandHeart, ShieldCheck, CheckCircle2, Award, Package } from 'lucide-react';
 
 export default function CampanhaDetailsPage() {
   const params = useParams();
@@ -129,8 +129,8 @@ export default function CampanhaDetailsPage() {
 
               {campanha.itensFoco && (
                 <div className="p-4 rounded-2xl bg-teal-50 dark:bg-teal-950/60 border border-teal-200/60 dark:border-teal-800/60">
-                  <h4 className="text-xs font-bold text-teal-800 dark:text-teal-300 uppercase tracking-wider mb-1">
-                    📌 Itens de Maior Necessidade Nesta Campanha:
+                  <h4 className="text-xs font-bold text-teal-800 dark:text-teal-300 uppercase tracking-wider mb-1 flex items-center gap-1">
+                    <Package className="w-3.5 h-3.5" /> Itens de Maior Necessidade Nesta Campanha:
                   </h4>
                   <p className="text-sm text-slate-700 dark:text-slate-200 font-medium">
                     {campanha.itensFoco}

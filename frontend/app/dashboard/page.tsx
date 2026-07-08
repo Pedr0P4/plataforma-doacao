@@ -9,7 +9,7 @@ import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { Spinner } from '@/components/ui/Spinner';
-import { Gift, Heart, Building2, PlusCircle, User, ShieldCheck, CheckCircle2, ArrowRight, Sparkles, Award } from 'lucide-react';
+import { Gift, Heart, Building2, PlusCircle, User, ShieldCheck, CheckCircle2, ArrowRight, Sparkles, Award, Lock, PartyPopper } from 'lucide-react';
 
 export default function DashboardPage() {
   const { user, loading: authLoading } = useAuth();
@@ -64,8 +64,8 @@ export default function DashboardPage() {
           </div>
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <span className="text-xs font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-white/20">
-                {isOng ? '🏢 Instituição / ONG' : '👤 Pessoa Física'}
+              <span className="text-xs font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-white/20 flex items-center gap-1">
+                {isOng ? <><Building2 className="w-3.5 h-3.5" /> Instituição / ONG</> : <><User className="w-3.5 h-3.5" /> Pessoa Física</>}
               </span>
               <span className="text-xs flex items-center gap-0.5 font-medium text-emerald-200">
                 <ShieldCheck className="w-3.5 h-3.5" /> Conta Verificada
@@ -136,7 +136,7 @@ export default function DashboardPage() {
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
             }`}
           >
-            🎁 Anunciados ({minhasDoacoes.length})
+            <span className="flex items-center gap-1 justify-center"><Gift className="w-3.5 h-3.5" /> Anunciados ({minhasDoacoes.length})</span>
           </button>
           <button
             onClick={() => setActiveTab('recebidas')}
@@ -146,7 +146,7 @@ export default function DashboardPage() {
                 : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
             }`}
           >
-            🙌 Recebidos ({recebidas.length})
+            <span className="flex items-center gap-1 justify-center"><Heart className="w-3.5 h-3.5" /> Recebidos ({recebidas.length})</span>
           </button>
           {isOng && (
             <button
@@ -157,7 +157,7 @@ export default function DashboardPage() {
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
               }`}
             >
-              🏢 Campanhas ({minhasCampanhas.length})
+              <span className="flex items-center gap-1 justify-center"><Building2 className="w-3.5 h-3.5" /> Campanhas ({minhasCampanhas.length})</span>
             </button>
           )}
         </div>
@@ -188,9 +188,9 @@ export default function DashboardPage() {
                         <div className="flex justify-between items-center mb-3">
                           <span className="text-xs font-semibold text-slate-400">ID #{doacao.id}</span>
                           {isEfetivada ? (
-                            <Badge variant="rose" size="sm">🔒 Doado para {doacao.nomeDonatario || 'Beneficiário'}</Badge>
+                            <Badge variant="rose" size="sm" className="flex items-center gap-1"><Lock className="w-3 h-3" /> Doado para {doacao.nomeDonatario || 'Beneficiário'}</Badge>
                           ) : (
-                            <Badge variant="emerald" size="sm">✨ Disponível</Badge>
+                            <Badge variant="emerald" size="sm" className="flex items-center gap-1"><Sparkles className="w-3 h-3" /> Disponível</Badge>
                           )}
                         </div>
                         <h3 className="font-extrabold text-base text-slate-900 dark:text-white mb-1">{item.nome}</h3>
@@ -232,7 +232,7 @@ export default function DashboardPage() {
                   return (
                     <Card key={doacao.id} className="border-l-4 border-l-emerald-500">
                       <div className="flex justify-between items-center mb-2">
-                        <Badge variant="emerald" size="sm">🎉 Recebido com Sucesso</Badge>
+                        <Badge variant="emerald" size="sm" className="flex items-center gap-1"><PartyPopper className="w-3.5 h-3.5" /> Recebido com Sucesso</Badge>
                         <span className="text-[10px] text-slate-400">ID #{doacao.id}</span>
                       </div>
                       <h3 className="font-extrabold text-base text-slate-900 dark:text-white mb-1">{item.nome}</h3>

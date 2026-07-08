@@ -4,14 +4,14 @@ import React, { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { doacoesApi } from '@/services/api';
+import { doacoesApi, avaliacaoApi } from '@/services/api';
 import { useAuth } from '@/context/AuthContext';
 import { Card } from '@/components/ui/Card';
 import { Input } from '@/components/ui/Input';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { Spinner } from '@/components/ui/Spinner';
-import { Gift, Heart, User, Building2, MapPin, CheckCircle2, ArrowLeft, Tag, Calendar, ShieldCheck, Award, Sparkles } from 'lucide-react';
+import { Gift, Heart, User, Building2, MapPin, CheckCircle2, ArrowLeft, Tag, Calendar, ShieldCheck, Award, Sparkles, Star, Lock, Zap, AlertTriangle, PartyPopper } from 'lucide-react';
 
 export default function DoacaoDetailsPage() {
   const params = useParams();
@@ -30,12 +30,35 @@ export default function DoacaoDetailsPage() {
 
   const isOwner = user && doacao && user.id === doacao.doadorId;
   const isEfetivada = doacao && doacao.donatarioId !== null && doacao.donatarioId !== undefined;
-
+  const isDonatario = user && doacao && user.id === doacao.donatarioId;
+  
   // Buscar interessados se for o doador
   const { data: interessados = [], isLoading: loadingInteressados } = useQuery({
     queryKey: ['interessados', id],
     queryFn: () => doacoesApi.listarInteressados(id),
     enabled: !!isOwner && !isEfetivada,
+  });
+
+  // Buscar avaliações se a doação já foi efetivada
+  const { data: avaliacoes = [], isLoading: loadingAvaliacoes } = useQuery({
+    queryKey: ['avaliacoes', id],
+    queryFn: () => avaliacaoApi.listar(id),
+    enabled: !!isEfetivada,
+  });
+
+  // Estado para Avaliação
+  const [nota, setNota] = useState<number>(5);
+  const [comentarioAvaliacao, setComentarioAvaliacao] = useState('');
+  
+  const avaliacaoMutation = useMutation({
+    mutationFn: () => avaliacaoApi.avaliar(id, { nota, comentario: comentarioAvaliacao }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['avaliacoes', id] });
+      alert('Avaliação enviada com sucesso!');
+    },
+    onError: (err: any) => {
+      alert(err.response?.data?.mensagem || 'Erro ao enviar avaliação.');
+    }
   });
 
   // Estado para efetivação
@@ -111,11 +134,15 @@ export default function DoacaoDetailsPage() {
 
   const item = doacao.itens?.[0] || { nome: 'Item sem nome', descricao: 'Sem descrição', categoria: 'Geral', quantidade: 1, eNovo: 'N' };
 
+  const myPapel = isOwner ? 'DOADOR' : (isDonatario ? 'DONATARIO' : null);
+  const myAvaliacao = myPapel ? avaliacoes.find((a: any) => a.papelAvaliador === myPapel) : null;
+  const otherAvaliacoes = myPapel ? avaliacoes.filter((a: any) => a.papelAvaliador !== myPapel) : avaliacoes;
+
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 space-y-8">
       
       {/* Botão Voltar */}
-      <Link href="/doacoes" className="inline-flex items-center gap-1 text-xs font-semibold text-slate-500 hover:text-emerald-600 transition-colors">
+      <Link href="/doacoes" className="inline-flex items-center gap-1 text-xs font-semibold text-slate-600 hover:text-emerald-700 transition-colors">
         <ArrowLeft className="w-4 h-4" /> Voltar ao Catálogo de Doações
       </Link>
 
@@ -138,9 +165,9 @@ export default function DoacaoDetailsPage() {
               <div className="absolute top-4 left-4 flex gap-2">
                 <Badge variant="emerald" size="md">{item.categoria || 'Geral'}</Badge>
                 {isEfetivada ? (
-                  <Badge variant="rose" size="md">🔒 DOADO</Badge>
+                  <Badge variant="rose" size="md" className="flex items-center gap-1"><Lock className="w-3.5 h-3.5" /> DOADO</Badge>
                 ) : (
-                  <Badge variant="teal" size="md">✨ Disponível</Badge>
+                  <Badge variant="teal" size="md" className="flex items-center gap-1"><Sparkles className="w-3.5 h-3.5" /> Disponível</Badge>
                 )}
               </div>
             </div>
@@ -151,7 +178,7 @@ export default function DoacaoDetailsPage() {
                   <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">
                     {item.nome}
                   </h1>
-                  <p className="text-xs text-slate-500 mt-1 flex items-center gap-1.5">
+                  <p className="text-xs text-slate-600 dark:text-slate-400 mt-1 flex items-center gap-1.5">
                     <Tag className="w-3.5 h-3.5 text-emerald-600" /> Quantidade disponível: <span className="font-bold text-slate-800 dark:text-slate-200">{item.quantidade || 1} unidade(s)</span>
                   </p>
                 </div>
@@ -161,15 +188,15 @@ export default function DoacaoDetailsPage() {
                 <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">
                   Descrição do Item
                 </h3>
-                <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed whitespace-pre-line">
+                <p className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-line">
                   {item.descricao || 'Nenhuma descrição adicional foi fornecida.'}
                 </p>
               </div>
 
               {item.motivo && (
                 <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-800/60 space-y-1">
-                  <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Motivo da Doação:</span>
-                  <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">{item.motivo}</p>
+                  <span className="text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">Motivo da Doação:</span>
+                  <p className="text-xs text-slate-800 dark:text-slate-200 font-medium">{item.motivo}</p>
                 </div>
               )}
 
@@ -180,13 +207,13 @@ export default function DoacaoDetailsPage() {
                     {doacao.nomeDoador ? doacao.nomeDoador.charAt(0).toUpperCase() : 'D'}
                   </div>
                   <div>
-                    <p className="text-xs text-slate-400 font-medium">Anunciado por</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Anunciado por</p>
                     <p className="text-sm font-bold text-slate-800 dark:text-slate-100 flex items-center gap-1">
                       {doacao.nomeDoador || 'Usuário'} <ShieldCheck className="w-4 h-4 text-emerald-500 inline" />
                     </p>
                   </div>
                 </div>
-                <span className="text-xs text-slate-400">ID da Doação: #{doacao.id}</span>
+                <span className="text-xs text-slate-500 font-medium">ID da Doação: #{doacao.id}</span>
               </div>
             </div>
           </Card>
@@ -197,25 +224,133 @@ export default function DoacaoDetailsPage() {
           
           {/* CASO 1: DOADO / EFETIVADO */}
           {isEfetivada ? (
-            <Card className="p-6 bg-gradient-to-br from-emerald-900 to-teal-950 text-white border-none shadow-2xl text-center space-y-4">
-              <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto text-emerald-300">
-                <CheckCircle2 className="w-10 h-10 animate-bounce" />
-              </div>
-              <h3 className="text-2xl font-black">Doação Concluída!</h3>
-              <p className="text-xs text-emerald-100 leading-relaxed">
-                Este item já foi destinado pelo doador a um dos interessados na plataforma. Agradecemos a todos que demonstraram interesse e parabenizamos a solidariedade!
-              </p>
-              {doacao.nomeDonatario && (
-                <div className="p-3 rounded-xl bg-white/10 backdrop-blur-md text-xs font-semibold">
-                  Beneficiário Selecionado: <span className="text-emerald-300">{doacao.nomeDonatario}</span>
+            <div className="space-y-6">
+              <Card className="p-6 border-2 border-emerald-500/30 shadow-xl text-center space-y-4">
+                <div className="w-16 h-16 bg-emerald-100 dark:bg-emerald-900/50 rounded-full flex items-center justify-center mx-auto text-emerald-600 dark:text-emerald-400">
+                  <CheckCircle2 className="w-10 h-10" />
                 </div>
+                <h3 className="text-2xl font-black text-slate-900 dark:text-white flex items-center justify-center gap-2">
+                  {isDonatario ? <><PartyPopper className="w-6 h-6 text-emerald-500" /> Parabéns!</> : 'Doação Concluída!'}
+                </h3>
+                <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                  {isDonatario 
+                    ? 'Você foi escolhido para receber esta doação. Verifique o local de entrega abaixo e não esqueça de avaliar a experiência!'
+                    : (isOwner 
+                        ? 'Você concluiu esta doação com sucesso. Agradecemos a sua solidariedade!'
+                        : 'Este item já foi destinado pelo doador a um dos interessados na plataforma.')
+                  }
+                </p>
+                {doacao.nomeDonatario && !isDonatario && (
+                  <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-300">
+                    Beneficiário Selecionado: <span className="text-emerald-600 dark:text-emerald-400">{doacao.nomeDonatario}</span>
+                  </div>
+                )}
+                {(isOwner || isDonatario) && doacao.localDoacao && doacao.localDoacao.nome && (
+                  <div className="mt-4 p-4 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 text-left space-y-2">
+                    <h4 className="text-xs font-bold text-emerald-600 dark:text-emerald-400 uppercase tracking-wider flex items-center gap-1">
+                      <MapPin className="w-3.5 h-3.5" /> Local de Entrega Combinado
+                    </h4>
+                    <p className="text-sm font-bold text-slate-900 dark:text-white">{doacao.localDoacao.nome}</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                      {doacao.localDoacao.logradouro} {doacao.localDoacao.numero} - {doacao.localDoacao.bairro}
+                    </p>
+                  </div>
+                )}
+              </Card>
+
+              {/* Seção de Avaliações */}
+              {(isOwner || isDonatario) && (
+                <Card className="p-6 space-y-4 border border-slate-200 dark:border-slate-800">
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                    <Award className="w-5 h-5 text-emerald-600" />
+                    Avalie a Experiência
+                  </h3>
+                  
+                  {!myAvaliacao ? (
+                    <div className="space-y-4 pt-2">
+                      <p className="text-sm text-slate-600 dark:text-slate-400">
+                        Como foi sua experiência com o {isOwner ? 'beneficiário' : 'doador'}?
+                      </p>
+                      <div className="flex items-center gap-2">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <Star 
+                            key={star} 
+                            onClick={() => setNota(star)}
+                            className={`w-8 h-8 cursor-pointer transition-colors ${
+                              nota >= star ? 'text-amber-400 fill-amber-400' : 'text-slate-300 dark:text-slate-700'
+                            }`}
+                          />
+                        ))}
+                      </div>
+                      <Input
+                        label="Comentário (opcional)"
+                        value={comentarioAvaliacao}
+                        onChange={(e) => setComentarioAvaliacao(e.target.value)}
+                        placeholder="Deixe um elogio ou observação..."
+                      />
+                      <Button 
+                        variant="glow" 
+                        className="w-full font-bold"
+                        onClick={() => avaliacaoMutation.mutate()}
+                        isLoading={avaliacaoMutation.isPending}
+                      >
+                        Enviar Avaliação
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="p-4 bg-emerald-50 dark:bg-emerald-950/30 rounded-xl border border-emerald-100 dark:border-emerald-900/50 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider">
+                          Sua Avaliação
+                        </span>
+                        <div className="flex">
+                          {[1, 2, 3, 4, 5].map((star) => (
+                            <Star 
+                              key={star} 
+                              className={`w-4 h-4 ${myAvaliacao.nota >= star ? 'text-amber-400 fill-amber-400' : 'text-slate-300 dark:text-slate-700'}`}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                      {myAvaliacao.comentario && (
+                        <p className="text-sm text-slate-700 dark:text-slate-300 italic">"{myAvaliacao.comentario}"</p>
+                      )}
+                    </div>
+                  )}
+
+                  {otherAvaliacoes.length > 0 && (
+                    <div className="pt-4 border-t border-slate-100 dark:border-slate-800 space-y-3">
+                      <h4 className="text-xs font-bold text-slate-500 uppercase">Avaliação Recebida</h4>
+                      {otherAvaliacoes.map((av: any) => (
+                        <div key={av.id} className="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-100 dark:border-slate-800 space-y-2">
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                              {av.papelAvaliador === 'DOADOR' ? 'O Doador disse:' : 'O Beneficiário disse:'}
+                            </span>
+                            <div className="flex">
+                              {[1, 2, 3, 4, 5].map((star) => (
+                                <Star 
+                                  key={star} 
+                                  className={`w-3.5 h-3.5 ${av.nota >= star ? 'text-amber-400 fill-amber-400' : 'text-slate-300 dark:text-slate-700'}`}
+                                />
+                              ))}
+                            </div>
+                          </div>
+                          {av.comentario && (
+                            <p className="text-sm text-slate-600 dark:text-slate-400 italic">"{av.comentario}"</p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </Card>
               )}
-            </Card>
+            </div>
           ) : isOwner ? (
             /* CASO 2: VISAO DO DOADOR -> ESCOLHER BENEFICIÁRIO */
             <Card className="p-6 space-y-6 border-2 border-emerald-500/40 shadow-xl">
               <div className="space-y-1 border-b border-slate-200 dark:border-slate-800 pb-4">
-                <Badge variant="emerald" size="sm" className="mb-1">⚡ Área do Doador</Badge>
+                <Badge variant="emerald" size="sm" className="mb-1 flex items-center gap-1 w-fit"><Zap className="w-3 h-3" /> Área do Doador</Badge>
                 <h2 className="text-lg font-extrabold text-slate-900 dark:text-white">
                   Selecionar Beneficiário
                 </h2>
@@ -250,7 +385,7 @@ export default function DoacaoDetailsPage() {
                         className={`flex items-center justify-between p-3 rounded-xl border cursor-pointer transition-all ${
                           selectedDonatarioId === interessado.id
                             ? 'bg-emerald-50 dark:bg-emerald-950/60 border-emerald-500 ring-2 ring-emerald-500/20'
-                            : 'bg-slate-50 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 hover:border-emerald-300'
+                            : 'bg-slate-50 dark:bg-slate-900/60 border-slate-200 dark:border-slate-800 hover:border-emerald-400'
                         }`}
                       >
                         <div className="flex items-center gap-2.5">
@@ -270,7 +405,7 @@ export default function DoacaoDetailsPage() {
                                 <Badge variant="slate" size="sm">PF</Badge>
                               )}
                             </p>
-                            <p className="text-[10px] text-slate-400">{interessado.email}</p>
+                            <p className="text-[10px] text-slate-500 dark:text-slate-400">{interessado.email}</p>
                           </div>
                         </div>
                         <Award className={`w-4 h-4 ${selectedDonatarioId === interessado.id ? 'text-emerald-600' : 'text-slate-300'}`} />
@@ -292,7 +427,7 @@ export default function DoacaoDetailsPage() {
                       />
 
                       {errorEfetivacao && (
-                        <p className="text-xs text-rose-500 font-medium">⚠️ {errorEfetivacao}</p>
+                        <p className="text-xs text-rose-500 font-medium flex items-center gap-1"><AlertTriangle className="w-3.5 h-3.5" /> {errorEfetivacao}</p>
                       )}
 
                       <Button
@@ -319,7 +454,7 @@ export default function DoacaoDetailsPage() {
                 <h3 className="text-lg font-bold text-slate-900 dark:text-white">
                   Gostou ou precisa deste item?
                 </h3>
-                <p className="text-xs text-slate-500 leading-relaxed">
+                <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
                   Ao clicar em <strong>Tenho Interesse</strong>, seu nome será enviado ao doador. Ele analisará a lista e escolherá a quem entregará a doação!
                 </p>
               </div>
@@ -342,17 +477,17 @@ export default function DoacaoDetailsPage() {
                       Fazer Login para Pedir Item
                     </Button>
                   </Link>
-                  <p className="text-[11px] text-slate-400">
+                  <p className="text-xs text-slate-500 font-medium">
                     Não tem conta? <Link href="/register" className="text-emerald-600 hover:underline">Cadastre-se grátis</Link>
                   </p>
                 </div>
               )}
 
-              <div className="bg-slate-50 dark:bg-slate-900/50 rounded-xl p-3.5 text-xs text-slate-600 dark:text-slate-400 space-y-1.5 border border-slate-200/50 dark:border-slate-800/50">
-                <span className="font-semibold text-slate-800 dark:text-slate-200 flex items-center gap-1">
+              <div className="bg-slate-50 dark:bg-slate-900/50 rounded-xl p-3.5 text-xs text-slate-700 dark:text-slate-300 space-y-1.5 border border-slate-200/50 dark:border-slate-800/50">
+                <span className="font-semibold text-slate-900 dark:text-white flex items-center gap-1">
                   <Sparkles className="w-3.5 h-3.5 text-amber-500" /> Dica de Segurança:
                 </span>
-                <p className="text-[11px] leading-relaxed">
+                <p className="text-xs leading-relaxed">
                   Nunca realize pagamentos de frete ou taxas para receber uma doação. Toda a plataforma é 100% gratuita.
                 </p>
               </div>
@@ -360,9 +495,9 @@ export default function DoacaoDetailsPage() {
           )}
 
           {/* Campanhas e Voluntariado Banner lateral */}
-          <Card className="p-5 bg-gradient-to-r from-teal-600 to-emerald-600 text-white border-none shadow-lg text-center space-y-3">
+          <div className="rounded-2xl p-5 bg-gradient-to-r from-teal-600 to-emerald-600 text-white border-none shadow-lg text-center space-y-3">
             <h4 className="font-bold text-sm">Você representa uma ONG ou Projeto Social?</h4>
-            <p className="text-xs text-teal-100 leading-relaxed">
+            <p className="text-xs text-teal-100 leading-relaxed font-medium">
               Crie uma campanha de arrecadação personalizada e convide voluntários para sua causa.
             </p>
             <Link href="/campanhas/nova">
@@ -370,7 +505,7 @@ export default function DoacaoDetailsPage() {
                 Criar Campanha de ONG &rarr;
               </button>
             </Link>
-          </Card>
+          </div>
 
         </div>
       </div>
