@@ -97,24 +97,35 @@ export interface CriarCampanhaDTO {
   locais?: LocalDoacaoDTO[];
 }
 
-export interface VagaVoluntarioDTO {
-  campanhaId?: number;
-  codigoVaga?: number;
+export interface CriarVagaDTO {
   funcao: string;
-  descricaoAtividades?: string;
+  descricaoAtividades: string;
+  quantidadeVagas: number;
   cargaHorariaSemanal?: number;
   dataInicio?: string;
   dataFim?: string;
+}
+
+export interface VagaVoluntarioDTO {
+  campanhaDoacaoId?: number;
+  codigoVaga?: number;
+  funcao: string;
+  descricaoAtividades?: string;
   quantidadeVagas?: number;
-  vagasOcupadas?: number;
+  cargaHorariaSemanal?: number;
+  dataInicio?: string;
+  dataFim?: string;
 }
 
 export interface InscricaoDTO {
   pessoaFisicaId?: number;
-  nomeVoluntario?: string;
-  campanhaId?: number;
+  nomePessoaFisica?: string;
+  emailPessoaFisica?: string;
   codigoVaga?: number;
-  data?: string;
+  nomeVaga?: string; // funcao
+  campanhaId?: number;
+  nomeCampanha?: string; // titulo da campanha
+  dataInscricao?: string;
   status?: 'PENDENTE' | 'APROVADA' | 'REJEITADA' | string;
 }
 

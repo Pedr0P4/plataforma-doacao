@@ -29,15 +29,12 @@ export const Navbar: React.FC = () => {
           
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-400 flex items-center justify-center text-white shadow-lg shadow-emerald-500/30 group-hover:scale-105 transition-transform duration-300">
-              <Gift className="w-5 h-5 animate-pulse-subtle" />
-            </div>
             <div className="flex flex-col">
               <span className="font-extrabold text-xl tracking-tight bg-gradient-to-r from-emerald-800 via-teal-700 to-emerald-700 dark:from-emerald-400 dark:to-teal-300 bg-clip-text text-transparent">
                 Doa+ Brasil
               </span>
               <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium -mt-1 flex items-center gap-1">
-                Conectando solidariedade <Sparkles className="w-2.5 h-2.5 text-amber-500 inline" />
+                Conectando solidariedade
               </span>
             </div>
           </Link>

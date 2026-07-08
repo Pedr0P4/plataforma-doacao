@@ -11,7 +11,10 @@ import {
   CriarCampanhaDTO,
   LocalDoacaoDTO,
   PaginaDTO,
-  UsuarioDTO
+  UsuarioDTO,
+  VagaVoluntarioDTO,
+  CriarVagaDTO,
+  InscricaoDTO
 } from '@/types';
 import { log } from 'console';
 
@@ -98,9 +101,7 @@ export const doacoesApi = {
     });
     return res.data;
   },
-  solicitarVoluntariado: async (id: number) => {
-    await api.post(`/vagas-voluntario/${id}/solicitar`);
-  },
+
   demonstrarInteresse: async (id: number) => {
     await api.post(`/doacoes/${id}/interesse`);
   },
@@ -151,6 +152,39 @@ export const campanhasApi = {
   removerLocal: async (id: number, localId: number) => {
     await api.delete(`/campanhas/${id}/locais/${localId}`);
   },
+};
+
+export const vagasApi = {
+  listarPorCampanha: async (campanhaId: number): Promise<VagaVoluntarioDTO[]> => {
+    const res = await api.get(`/campanhas/${campanhaId}/vagas`);
+    return res.data;
+  },
+  criar: async (campanhaId: number, dto: CriarVagaDTO): Promise<VagaVoluntarioDTO> => {
+    const res = await api.post(`/campanhas/${campanhaId}/vagas`, dto);
+    return res.data;
+  },
+  remover: async (campanhaId: number, codigoVaga: number) => {
+    await api.delete(`/campanhas/${campanhaId}/vagas/${codigoVaga}`);
+  },
+};
+
+export const inscricoesApi = {
+  inscrever: async (campanhaId: number, codigoVaga: number): Promise<InscricaoDTO> => {
+    const res = await api.post(`/campanhas/${campanhaId}/vagas/${codigoVaga}/inscricoes`);
+    return res.data;
+  },
+  listarPorVaga: async (campanhaId: number, codigoVaga: number): Promise<InscricaoDTO[]> => {
+    const res = await api.get(`/campanhas/${campanhaId}/vagas/${codigoVaga}/inscricoes`);
+    return res.data;
+  },
+  atualizarStatus: async (campanhaId: number, codigoVaga: number, pessoaFisicaId: number, status: string): Promise<InscricaoDTO> => {
+    const res = await api.put(`/campanhas/${campanhaId}/vagas/${codigoVaga}/inscricoes/${pessoaFisicaId}/status`, { status });
+    return res.data;
+  },
+  listarMinhas: async (): Promise<InscricaoDTO[]> => {
+    const res = await api.get(`/inscricoes/minhas`);
+    return res.data;
+  }
 };
 
 export const avaliacaoApi = {
