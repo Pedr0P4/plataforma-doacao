@@ -33,7 +33,7 @@ export const Navbar: React.FC = () => {
               <Gift className="w-5 h-5 animate-pulse-subtle" />
             </div>
             <div className="flex flex-col">
-              <span className="font-extrabold text-xl tracking-tight bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-500 dark:from-emerald-400 dark:to-teal-300 bg-clip-text text-transparent">
+              <span className="font-extrabold text-xl tracking-tight bg-gradient-to-r from-emerald-800 via-teal-700 to-emerald-700 dark:from-emerald-400 dark:to-teal-300 bg-clip-text text-transparent">
                 Doa+ Brasil
               </span>
               <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium -mt-1 flex items-center gap-1">

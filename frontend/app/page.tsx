@@ -47,12 +47,12 @@ export default function HomePage() {
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-slate-900 dark:text-white leading-[1.1]">
               A generosidade de um encontra a{' '}
-              <span className="bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-500 dark:from-emerald-400 dark:via-teal-300 dark:to-emerald-300 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-emerald-800 via-teal-700 to-emerald-700 dark:from-emerald-400 dark:via-teal-300 dark:to-emerald-300 bg-clip-text text-transparent">
                 necessidade do outro.
               </span>
             </h1>
 
-            <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-2xl leading-relaxed font-normal">
+            <p className="text-base sm:text-lg text-slate-700 dark:text-slate-300 max-w-2xl leading-relaxed font-normal">
               Uma plataforma inteligente onde você pode anunciar itens para doação ou demonstrar interesse naquilo que precisa. O doador visualiza a lista de interessados e escolhe quem receberá o item com total transparência e segurança.
             </p>
 
@@ -73,15 +73,15 @@ export default function HomePage() {
             <div className="pt-6 grid grid-cols-3 gap-4 border-t border-slate-200/80 dark:border-slate-800 max-w-lg mx-auto lg:mx-0 text-left">
               <div>
                 <p className="text-2xl font-black text-slate-900 dark:text-white">+1.240</p>
-                <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Itens Doados</p>
+                <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">Itens Doados</p>
               </div>
               <div>
                 <p className="text-2xl font-black text-slate-900 dark:text-white">+85</p>
-                <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">ONGs Cadastradas</p>
+                <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">ONGs Cadastradas</p>
               </div>
               <div>
                 <p className="text-2xl font-black text-emerald-600 dark:text-emerald-400">100%</p>
-                <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Gratuito & Seguro</p>
+                <p className="text-xs text-slate-700 dark:text-slate-300 font-medium">Gratuito & Seguro</p>
               </div>
             </div>
           </div>
@@ -94,7 +94,7 @@ export default function HomePage() {
               <div className="glass-card rounded-3xl p-6 shadow-2xl border border-slate-200/80 dark:border-slate-700/80 relative z-20 animate-float" style={{ animationDuration: '6s' }}>
                 <div className="flex items-center justify-between mb-4">
                   <Badge variant="emerald" size="sm">Doação Disponível</Badge>
-                  <span className="text-xs text-slate-400">Há 2 horas</span>
+                  <span className="text-xs text-slate-700 dark:text-slate-300">Há 2 horas</span>
                 </div>
                 
                 <div className="aspect-video w-full rounded-2xl bg-gradient-to-br from-emerald-100 to-teal-100 dark:from-emerald-950/80 dark:to-teal-950/80 flex items-center justify-center relative overflow-hidden mb-4">
@@ -107,7 +107,7 @@ export default function HomePage() {
                 <h3 className="font-bold text-lg text-slate-900 dark:text-white mb-1">
                   Cadeira de Escritório Ergonômica
                 </h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mb-4 line-clamp-2">
+                <p className="text-xs text-slate-700 dark:text-slate-300 mb-4 line-clamp-2">
                   Em perfeito estado, com regulagem de altura e apoio lombar. Doando por motivo de mudança para outro estado.
                 </p>
 
@@ -135,7 +135,7 @@ export default function HomePage() {
                   </div>
                   <div>
                     <p className="text-xs font-bold text-slate-800 dark:text-slate-100">Novo Interessado!</p>
-                    <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                    <p className="text-[11px] text-slate-700 dark:text-slate-300">
                       ONG Sementes do Futuro demonstrou interesse na sua doação.
                     </p>
                   </div>
@@ -148,7 +148,7 @@ export default function HomePage() {
                   <Building2 className="w-4 h-4 text-teal-600" />
                   <span className="text-xs font-bold text-slate-800 dark:text-slate-100">Campanha Ativa</span>
                 </div>
-                <p className="text-[11px] text-slate-500 mt-1">Arrecadação de Agasalhos de Inverno &rarr;</p>
+                <p className="text-[11px] text-slate-700 dark:text-slate-300 mt-1">Arrecadação de Agasalhos de Inverno &rarr;</p>
               </div>
 
             </div>
@@ -164,7 +164,7 @@ export default function HomePage() {
             <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
               Como funciona o fluxo de doação na plataforma?
             </h2>
-            <p className="mt-3 text-sm sm:text-base text-slate-600 dark:text-slate-400">
+            <p className="mt-3 text-sm sm:text-base text-slate-700 dark:text-slate-300">
               Desenhamos um modelo justo onde quem doa tem autonomia para escolher quem receberá o item entre os interessados cadastrados.
             </p>
           </div>
@@ -180,7 +180,7 @@ export default function HomePage() {
                 <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
                   Anuncie um Item ou Campanha
                 </h3>
-                <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
                   Pessoas físicas cadastram itens que desejam doar com foto e descrição. ONGs criam campanhas de arrecadação solicitando itens específicos.
                 </p>
               </div>
@@ -198,7 +198,7 @@ export default function HomePage() {
                 <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
                   Manifestação de Interesse
                 </h3>
-                <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
                   Quem precisa do item (seja outra pessoa ou uma instituição beneficente) navega pela vitrine e clica no botão <span className="font-semibold text-teal-600">"Tenho Interesse"</span>.
                 </p>
               </div>
@@ -219,7 +219,7 @@ export default function HomePage() {
                 <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
                   A Escolha é do Doador
                 </h3>
-                <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
                   O doador acessa a lista completa de pessoas e ONGs interessadas em seu item. Analisa o perfil e escolhe com quem deseja efetivar a doação.
                 </p>
               </div>
@@ -237,7 +237,7 @@ export default function HomePage() {
                 <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">
                   Efetivação e Entrega
                 </h3>
-                <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                <p className="text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
                   A doação é efetivada no sistema, o ponto de coleta ou encontro é combinado e o impacto social acontece!
                 </p>
               </div>
@@ -257,7 +257,7 @@ export default function HomePage() {
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">
               Destaques da Comunidade
             </h2>
-            <p className="text-sm text-slate-500 mt-1">
+            <p className="text-sm text-slate-700 dark:text-slate-300 mt-1">
               Explore o que está acontecendo agora mesmo na plataforma.
             </p>
           </div>
@@ -269,7 +269,7 @@ export default function HomePage() {
               className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
                 activeTab === 'doacoes'
                   ? 'bg-white dark:bg-slate-800 text-emerald-600 dark:text-emerald-400 shadow-sm'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
+                  : 'text-slate-700 dark:text-slate-300 hover:text-slate-900'
               }`}
             >
               🎁 Doações Disponíveis
@@ -279,7 +279,7 @@ export default function HomePage() {
               className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
                 activeTab === 'campanhas'
                   ? 'bg-white dark:bg-slate-800 text-emerald-600 dark:text-emerald-400 shadow-sm'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
+                  : 'text-slate-700 dark:text-slate-300 hover:text-slate-900'
               }`}
             >
               🏢 Campanhas de ONGs
@@ -289,7 +289,7 @@ export default function HomePage() {
               className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
                 activeTab === 'voluntariado'
                   ? 'bg-white dark:bg-slate-800 text-emerald-600 dark:text-emerald-400 shadow-sm'
-                  : 'text-slate-600 dark:text-slate-400 hover:text-slate-900'
+                  : 'text-slate-700 dark:text-slate-300 hover:text-slate-900'
               }`}
             >
               🤝 Voluntariado
@@ -304,9 +304,9 @@ export default function HomePage() {
               <Spinner size="lg" />
             ) : doacoesList.length === 0 ? (
               <Card className="text-center py-16 border-dashed border-2 border-slate-300 dark:border-slate-700">
-                <Gift className="w-12 h-12 text-slate-400 mx-auto mb-3" />
+                <Gift className="w-12 h-12 text-slate-500 dark:text-slate-400 mx-auto mb-3" />
                 <h3 className="text-lg font-bold text-slate-800 dark:text-slate-200">Nenhuma doação ativa encontrada</h3>
-                <p className="text-xs text-slate-500 max-w-sm mx-auto mt-1 mb-6">
+                <p className="text-xs text-slate-700 dark:text-slate-300 max-w-sm mx-auto mt-1 mb-6">
                   Seja o primeiro a cadastrar um item para doação e dar início a essa onda de solidariedade!
                 </p>
                 <Link href="/doacoes/nova">
@@ -336,13 +336,13 @@ export default function HomePage() {
                       <h3 className="font-bold text-base text-slate-900 dark:text-white mb-1">
                         {doacao.itens?.[0]?.nome || 'Item para doação'}
                       </h3>
-                      <p className="text-xs text-slate-500 dark:text-slate-400 mb-4 line-clamp-2">
+                      <p className="text-xs text-slate-700 dark:text-slate-300 mb-4 line-clamp-2">
                         {doacao.itens?.[0]?.descricao || 'Sem descrição detalhada disponível.'}
                       </p>
                     </div>
 
                     <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
-                      <span className="text-[11px] font-semibold text-slate-600 dark:text-slate-300">
+                      <span className="text-[11px] font-semibold text-slate-700 dark:text-slate-300">
                         Por: {doacao.nomeDoador || 'Doador'}
                       </span>
                       <Link href={`/doacoes/${doacao.id}`}>
@@ -371,9 +371,9 @@ export default function HomePage() {
               <Spinner size="lg" />
             ) : campanhasList.length === 0 ? (
               <Card className="text-center py-16 border-dashed border-2 border-slate-300 dark:border-slate-700">
-                <Building2 className="w-12 h-12 text-slate-400 mx-auto mb-3" />
+                <Building2 className="w-12 h-12 text-slate-500 dark:text-slate-400 mx-auto mb-3" />
                 <h3 className="text-lg font-bold text-slate-800 dark:text-slate-200">Nenhuma campanha em destaque</h3>
-                <p className="text-xs text-slate-500 max-w-sm mx-auto mt-1 mb-6">
+                <p className="text-xs text-slate-700 dark:text-slate-300 max-w-sm mx-auto mt-1 mb-6">
                   As Instituições parceiras publicam suas campanhas de arrecadação de itens aqui.
                 </p>
                 <Link href="/campanhas">
@@ -387,7 +387,7 @@ export default function HomePage() {
                     <div>
                       <div className="flex items-center justify-between mb-3">
                         <Badge variant="teal" size="sm">Campanha Ativa</Badge>
-                        <span className="text-[10px] text-slate-400 flex items-center gap-1">
+                        <span className="text-[10px] text-slate-700 dark:text-slate-300 flex items-center gap-1">
                           <Calendar className="w-3 h-3" /> {camp.dataFim || 'Contínua'}
                         </span>
                       </div>
@@ -395,20 +395,20 @@ export default function HomePage() {
                       <h3 className="font-bold text-base text-slate-900 dark:text-white mb-2">
                         {camp.titulo}
                       </h3>
-                      <p className="text-xs text-slate-500 dark:text-slate-400 mb-4 line-clamp-3">
+                      <p className="text-xs text-slate-700 dark:text-slate-300 mb-4 line-clamp-3">
                         {camp.descricao || 'Contribua com esta causa doando os itens solicitados pela instituição.'}
                       </p>
 
                       {camp.itensFoco && (
                         <div className="p-2.5 rounded-xl bg-teal-50 dark:bg-teal-950/40 text-xs mb-4">
                           <span className="font-semibold text-teal-800 dark:text-teal-300">Itens Solicitados: </span>
-                          <span className="text-slate-600 dark:text-slate-300">{camp.itensFoco}</span>
+                          <span className="text-slate-700 dark:text-slate-300">{camp.itensFoco}</span>
                         </div>
                       )}
                     </div>
 
                     <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
-                      <span className="text-[11px] font-semibold text-slate-600 dark:text-slate-300 truncate max-w-[120px]">
+                      <span className="text-[11px] font-semibold text-slate-700 dark:text-slate-300 truncate max-w-[120px]">
                         {camp.nomeInstituicao || 'ONG Beneficente'}
                       </span>
                       <Link href={`/campanhas/${camp.id}`}>

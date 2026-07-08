@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+/* Force Light Mode as default by changing the dark variant strategy to 'class' */
+@custom-variant dark (&:is(.dark *));
+@variant dark (&:is(.dark *));
+
+:root {
+  color-scheme: light !important;
+}
+
 @layer base {
   :root {
     --background: #f8fafc;
